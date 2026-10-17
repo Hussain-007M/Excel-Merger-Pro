@@ -56,3 +56,17 @@ Developed and tested on Windows.
 ## Project Status
 
 Version 3.3. Source code is available for portfolio and development purposes.
+
+## Screenshots
+
+### Main Interface
+![Main Interface](screenshots/main_interface.png)
+
+### MERGE Interface
+![MERGE Interface](screenshots/merge_interface.png)
+
+### JOIN Interface
+![JOIN Interface](screenshots/join_interface.png)
+
+### Excel Report
+![Excel Report](screenshots/excel_report.png)
