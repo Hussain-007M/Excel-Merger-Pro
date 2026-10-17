@@ -1,0 +1,39 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# PyInstaller build files
+build/
+dist/
+*.exe
+
+# Generated Excel reports
+*_output/
+output_files/
+*.xlsx
+*.xls
+Universal_Merged*.xlsx
+Joined_Data*.xlsx
+
+# Private input datasets
+input_files/
+kaggle_test_input/
+olist_test_input/
+*_test_input/
+
+# Backup and temporary files
+*_backup.py
+*.log
+*.tmp
+~$*
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
