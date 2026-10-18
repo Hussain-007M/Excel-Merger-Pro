@@ -1,5 +1,10 @@
 # Excel Merger Pro v3.3
 
+[![Download for Windows](https://img.shields.io/badge/Download-Windows%20EXE-7B2CBF?style=for-the-badge&logo=windows)](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/download/v3.3.0/ExcelMergerPro_v3.3.0.exe)
+
+**Latest Release:** v3.3.0 | **Platform:** Windows | **Python Installation:** Not Required
+
+
 A Python desktop application for automating Excel and CSV data processing.
 
 Excel Merger Pro helps users combine multiple datasets, join related tables, and generate organized Excel reports through a graphical user interface.
