@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+from data_types import apply_column_types
 import argparse
 import json
 import os
@@ -141,7 +141,8 @@ def merge_files(
     output_folder,
     mapping=None,
     selected=None,
-    progress=None
+    progress=None,
+    column_types=None
 ):
     source = Path(input_folder).resolve()
     target = Path(output_folder).resolve()
@@ -220,14 +221,22 @@ def merge_files(
         print("DEBUG COLUMNS:", list(df.columns))
 
 
-# Convert known numeric columns safely
-        numeric_columns = {"total_bill", "tip", "size"}
 
-        for column in numeric_columns.intersection(df.columns):
-            df[column] = pd.to_numeric(
-        df[column],
-        errors="raise"
-    )
+        # Apply only explicitly approved column types
+        requested_types = column_types or {}
+
+        applicable_types = {
+            column: data_type
+            for column, data_type in requested_types.items()
+            if column in df.columns
+        }
+
+        if applicable_types:
+            df = apply_column_types(
+                df,
+                applicable_types
+            )
+
 
         
         df["Source File"] = path.name

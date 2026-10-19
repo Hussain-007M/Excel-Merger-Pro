@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,
+    QDialog,
     QListWidget,
     QMessageBox,
     QFrame,
@@ -15,7 +16,9 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from universal_merge import merge_files
-
+from universal_merge import list_input_files, read_file
+from type_suggestions import suggest_column_types
+from column_types_dialog import ColumnTypesDialog
 
 
 class MergeWorker(QThread):
@@ -23,22 +26,81 @@ class MergeWorker(QThread):
     completed = Signal(object)
     failed = Signal(str)
 
-    def __init__(self, input_folder, output_folder):
+    def __init__(
+        self,
+        input_folder,
+        output_folder,
+        column_types=None
+    ):
         super().__init__()
+
         self.input_folder = input_folder
         self.output_folder = output_folder
+        self.column_types = column_types or {}
 
     def run(self):
         try:
             result = merge_files(
-                self.input_folder,
-                self.output_folder,
-                progress=self.progress.emit
+            self.input_folder,
+            self.output_folder,
+            progress=self.progress.emit,
+            column_types=self.column_types
             )
             self.completed.emit(result)
 
         except Exception as error:
             self.failed.emit(str(error))
+
+
+
+            
+class InspectionWorker(QThread):
+    completed = Signal(dict)
+    failed = Signal(str)
+
+    def __init__(self, input_folder):
+        super().__init__()
+        self.input_folder = input_folder
+
+    def run(self):
+        try:
+            paths = list_input_files(
+                Path(self.input_folder)
+            )
+
+            if not paths:
+                raise ValueError(
+                    "No CSV or XLSX files found."
+                )
+
+            column_votes = {}
+
+            for path in paths:
+                df = read_file(path)
+
+                suggestions = suggest_column_types(df)
+
+                for column, suggestion in suggestions.items():
+                    column_votes.setdefault(
+                        column, []
+                    ).append(suggestion)
+
+            final_suggestions = {}
+
+            for column, votes in column_votes.items():
+                if all(
+                    vote == "Number"
+                    for vote in votes
+                ):
+                    final_suggestions[column] = "Number"
+                else:
+                    final_suggestions[column] = "Keep Original"
+
+            self.completed.emit(final_suggestions)
+
+        except Exception as error:
+            self.failed.emit(str(error))
+
 
 
 
@@ -110,6 +172,7 @@ class MainWindow(QMainWindow):
         )
 
         merge_button = QPushButton("Merge Files")
+        self.merge_button = merge_button
 
         merge_button.clicked.connect(self.select_files)
 
@@ -180,9 +243,17 @@ class MainWindow(QMainWindow):
     
     def select_files(self):
         folder = QFileDialog.getExistingDirectory(
-            self,
-            "Choose Folder Containing Excel or CSV Files"
-        )
+         self,
+    "Choose Folder Containing Excel or CSV Files"
+)
+
+        if not folder:
+           return
+
+        folder_path = Path(folder)
+        self.input_folder = str(folder_path)
+
+        supported_extensions = {".xlsx", ".csv"}
 
         if not folder:
             return
@@ -225,15 +296,18 @@ class MainWindow(QMainWindow):
 
 
     
+    
     def start_merge(self):
-        if getattr(self, "worker", None) is not None:
-            if self.worker.isRunning():
-                return
+        if getattr(self, "_busy", False):
+            return
 
-        if not getattr(self, "input_folder", ""):
+        source = getattr(self, "input_folder", "")
+        output = getattr(self, "output_folder", "")
+
+        if not source or not Path(source).is_dir():
             QMessageBox.warning(
                 self, "Missing Input",
-                "Please select an input folder."
+                "Please select a valid input folder."
             )
             return
 
@@ -244,25 +318,43 @@ class MainWindow(QMainWindow):
             )
             return
 
-        if not getattr(self, "output_folder", ""):
+        if not output or not Path(output).is_dir():
             QMessageBox.warning(
                 self, "Missing Output",
-                "Please select an output folder."
+                "Please select a valid output folder."
             )
             return
 
-        self.start_button.setEnabled(False)
-        self.start_button.setText("Processing...")
+        if Path(source).resolve() == Path(output).resolve():
+            QMessageBox.warning(
+                self, "Invalid Folders",
+                "Input and output folders must be different."
+            )
+            return
 
-        self.worker = MergeWorker(
-            self.input_folder,
-            self.output_folder
+        self._busy = True
+        self.start_button.setEnabled(False)
+        self.merge_button.setEnabled(False)
+        self.output_button.setEnabled(False)
+        self.start_button.setText("Inspecting columns...")
+
+        self.inspection_result = None
+        self.inspection_error = None
+
+        self.inspection_worker = InspectionWorker(source)
+
+        self.inspection_worker.completed.connect(
+            self.store_inspection
+        )
+        self.inspection_worker.failed.connect(
+            self.store_inspection_error
+        )
+        self.inspection_worker.finished.connect(
+            self.finish_inspection
         )
 
-        self.worker.progress.connect(self.show_progress)
-        self.worker.completed.connect(self.merge_completed)
-        self.worker.failed.connect(self.merge_failed)
-        self.worker.start()
+        self.inspection_worker.start()
+
 
     def show_progress(self, message):
         self.start_button.setText(str(message))
@@ -287,6 +379,118 @@ class MainWindow(QMainWindow):
             str(error)
         )
 
+
+    def store_inspection(self, suggestions):
+        self.inspection_result = suggestions
+
+    def store_inspection_error(self, error):
+        self.inspection_error = error
+
+    def unlock_processing(self):
+        self._busy = False
+        self.start_button.setEnabled(True)
+        self.merge_button.setEnabled(True)
+        self.output_button.setEnabled(True)
+        self.start_button.setText("Start Merging")
+
+    def finish_inspection(self):
+        if self.inspection_error:
+            self.unlock_processing()
+            QMessageBox.critical(
+                self, "Inspection Failed",
+                self.inspection_error
+            )
+            return
+
+        if self.inspection_result is None:
+            self.unlock_processing()
+            QMessageBox.critical(
+                self, "Inspection Failed",
+                "No inspection result was returned."
+            )
+            return
+
+        dialog = ColumnTypesDialog(
+            self.inspection_result
+        )
+
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            self.unlock_processing()
+            return
+
+        type_mapping = {
+            "Number": "number",
+            "Text": "text"
+        }
+
+        approved_types = {
+            column: type_mapping[choice]
+            for column, choice in dialog.choices.items()
+            if choice in type_mapping
+        }
+
+        self.merge_result = None
+        self.merge_error = None
+
+        self.start_button.setText("Merging...")
+
+        self.worker = MergeWorker(
+            self.input_folder,
+            self.output_folder,
+            column_types=approved_types
+        )
+
+        self.worker.progress.connect(self.show_progress)
+        self.worker.completed.connect(self.store_merge_result)
+        self.worker.failed.connect(self.store_merge_error)
+        self.worker.finished.connect(self.finish_merge)
+
+        self.worker.start()
+
+    def store_merge_result(self, result):
+        self.merge_result = result
+
+    def store_merge_error(self, error):
+        self.merge_error = error
+
+    def finish_merge(self):
+        self.unlock_processing()
+
+        if self.merge_error:
+            QMessageBox.critical(
+                self, "Merge Failed",
+                self.merge_error
+            )
+            return
+
+        if self.merge_result is None:
+            QMessageBox.critical(
+                self, "Merge Failed",
+                "No merge result was returned."
+            )
+            return
+
+        result = self.merge_result
+
+        QMessageBox.information(
+            self,
+            "Merge Completed",
+            f"Files: {result['files']}\n"
+            f"Rows: {result['clean_rows']}\n"
+            f"Report: {result['report']}"
+        )
+
+    def closeEvent(self, event):
+        if getattr(self, "_busy", False):
+            QMessageBox.warning(
+                self,
+                "Processing",
+                "Please wait until processing finishes."
+            )
+            event.ignore()
+            return
+
+        super().closeEvent(event)
 
     
 if __name__ == "__main__":
