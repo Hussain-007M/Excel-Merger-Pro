@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QDialog,
     QListWidget,
     QMessageBox,
+    QProgressBar,
     QFrame,
     QHBoxLayout,
     QLabel,
@@ -19,6 +20,8 @@ from universal_merge import merge_files
 from universal_merge import list_input_files, read_file
 from type_suggestions import suggest_column_types
 from column_types_dialog import ColumnTypesDialog
+from PySide6.QtGui import QDesktopServices
+from PySide6.QtCore import QUrl
 
 
 class MergeWorker(QThread):
@@ -234,6 +237,41 @@ class MainWindow(QMainWindow):
         content_layout.addWidget(self.output_label)
         content_layout.addSpacing(20)
         content_layout.addWidget(start_button)
+        
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setRange(0, 0)
+        self.progress_bar.setTextVisible(False)
+        self.progress_bar.setFixedHeight(8)
+
+        self.progress_bar.setStyleSheet("""
+            QProgressBar {
+                background-color: #292C40;
+                border: none;
+                border-radius: 4px;
+            }
+
+            QProgressBar::chunk {
+                background-color: #8B5CF6;
+                border-radius: 4px;
+            }
+        """)
+
+        self.progress_bar.hide()
+
+        self.status_label = QLabel("Ready to merge")
+        self.status_label.setStyleSheet(
+            "color: #A5A8BD; font-size: 13px;"
+        )
+
+        content_layout.addWidget(self.progress_bar)
+        content_layout.addWidget(self.status_label)
+        self.open_report_button = QPushButton("Open Report")
+        self.open_report_button.setFixedWidth(200)
+        self.open_report_button.setEnabled(False)
+        self.open_report_button.clicked.connect(self.open_report)
+
+        content_layout.addWidget(self.open_report_button)
+
         content_layout.addStretch()
 
         layout.addWidget(sidebar)
@@ -337,6 +375,8 @@ class MainWindow(QMainWindow):
         self.merge_button.setEnabled(False)
         self.output_button.setEnabled(False)
         self.start_button.setText("Inspecting columns...")
+        self.status_label.setText("Inspecting columns...")
+        self.progress_bar.show()
 
         self.inspection_result = None
         self.inspection_error = None
@@ -357,7 +397,7 @@ class MainWindow(QMainWindow):
 
 
     def show_progress(self, message):
-        self.start_button.setText(str(message))
+        self.status_label.setText(str(message))
 
     def merge_completed(self, result):
         self.start_button.setEnabled(True)
@@ -387,6 +427,9 @@ class MainWindow(QMainWindow):
         self.inspection_error = error
 
     def unlock_processing(self):
+        self.progress_bar.setRange(0, 1)
+        self.progress_bar.setValue(0)
+        self.progress_bar.hide()
         self._busy = False
         self.start_button.setEnabled(True)
         self.merge_button.setEnabled(True)
@@ -409,6 +452,9 @@ class MainWindow(QMainWindow):
                 "No inspection result was returned."
             )
             return
+
+            self.progress_bar.hide()
+            self.status_label.setText("Waiting for column type approval...")
 
         dialog = ColumnTypesDialog(
             self.inspection_result
@@ -433,6 +479,8 @@ class MainWindow(QMainWindow):
         self.merge_error = None
 
         self.start_button.setText("Merging...")
+        self.status_label.setText("Merging files...")
+        self.progress_bar.show()
 
         self.worker = MergeWorker(
             self.input_folder,
@@ -471,7 +519,10 @@ class MainWindow(QMainWindow):
             return
 
         result = self.merge_result
+        self.report_path = result["report"]
+        self.open_report_button.setEnabled(True)
 
+        
         QMessageBox.information(
             self,
             "Merge Completed",
@@ -479,6 +530,31 @@ class MainWindow(QMainWindow):
             f"Rows: {result['clean_rows']}\n"
             f"Report: {result['report']}"
         )
+
+
+
+    def open_report(self):
+        report = getattr(self, "report_path", "")
+
+        if not report or not Path(report).is_file():
+            QMessageBox.warning(
+                self,
+                "Report Not Found",
+                "The report file could not be found."
+            )
+            return
+
+        opened = QDesktopServices.openUrl(
+            QUrl.fromLocalFile(str(Path(report).resolve()))
+        )
+
+        if not opened:
+         QMessageBox.warning(
+            self,
+            "Open Failed",
+            "Could not open the Excel report."
+        )
+
 
     def closeEvent(self, event):
         if getattr(self, "_busy", False):
