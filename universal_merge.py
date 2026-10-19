@@ -217,8 +217,21 @@ def merge_files(
             columns=renames,
             inplace=True
         )
+        print("DEBUG COLUMNS:", list(df.columns))
 
+
+# Convert known numeric columns safely
+        numeric_columns = {"total_bill", "tip", "size"}
+
+        for column in numeric_columns.intersection(df.columns):
+            df[column] = pd.to_numeric(
+        df[column],
+        errors="raise"
+    )
+
+        
         df["Source File"] = path.name
+        print("DEBUG TYPES:", df.dtypes.to_dict())
 
         frames.append(df)
 
