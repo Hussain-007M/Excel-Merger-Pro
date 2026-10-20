@@ -271,6 +271,36 @@ class MainWindow(QMainWindow):
         self.open_report_button.clicked.connect(self.open_report)
 
         content_layout.addWidget(self.open_report_button)
+        
+        self.results_panel = QFrame()
+        self.results_panel.setStyleSheet("""
+            QFrame#resultsPanel {
+                background-color: #1B1D2B;
+                border-radius: 12px;
+            }
+        """)
+        self.results_panel.setObjectName("resultsPanel")
+
+        results_layout = QVBoxLayout(self.results_panel)
+        results_layout.setContentsMargins(20, 18, 20, 18)
+        results_layout.setSpacing(10)
+
+        self.results_title = QLabel("Merge Completed")
+        self.results_title.setStyleSheet(
+            "color: #4ADE80; font-size: 18px; font-weight: bold;"
+        )
+
+        self.results_details = QLabel()
+        self.results_details.setStyleSheet(
+            "color: #F4F4FA; font-size: 14px;"
+        )
+
+        results_layout.addWidget(self.results_title)
+        results_layout.addWidget(self.results_details)
+
+        self.results_panel.hide()
+        content_layout.addWidget(self.results_panel)
+
 
         content_layout.addStretch()
 
@@ -371,6 +401,8 @@ class MainWindow(QMainWindow):
             return
 
         self._busy = True
+        self.results_panel.hide()
+        self.open_report_button.setEnabled(False)
         self.start_button.setEnabled(False)
         self.merge_button.setEnabled(False)
         self.output_button.setEnabled(False)
@@ -519,17 +551,20 @@ class MainWindow(QMainWindow):
             return
 
         result = self.merge_result
+        
+        self.results_details.setText(
+            f"Files processed: {result['files']}\n"
+            f"Rows merged: {result['clean_rows']}\n"
+            f"Excluded rows: {result['excluded_rows']}"
+        )
+
+        self.results_panel.show()
+
         self.report_path = result["report"]
         self.open_report_button.setEnabled(True)
 
         
-        QMessageBox.information(
-            self,
-            "Merge Completed",
-            f"Files: {result['files']}\n"
-            f"Rows: {result['clean_rows']}\n"
-            f"Report: {result['report']}"
-        )
+        self.status_label.setText("Merge complete. Your report is ready.")
 
 
 
