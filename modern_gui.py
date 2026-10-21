@@ -220,6 +220,7 @@ class MainWindow(QMainWindow):
         content_layout.addWidget(title)
         content_layout.addWidget(subtitle)
         self.file_list = QListWidget()
+        self.file_list.setFixedHeight(130)
         self.file_list.setMinimumHeight(160)
 
         content_layout.addWidget(self.file_list)
@@ -236,7 +237,12 @@ class MainWindow(QMainWindow):
         content_layout.addWidget(self.output_button)
         content_layout.addWidget(self.output_label)
         content_layout.addSpacing(20)
-        content_layout.addWidget(start_button)
+        buttons_layout = QHBoxLayout()
+        buttons_layout.setSpacing(12)
+
+        buttons_layout.addWidget(start_button)
+
+        content_layout.addLayout(buttons_layout)
         
         self.progress_bar = QProgressBar()
         self.progress_bar.setRange(0, 0)
@@ -270,7 +276,8 @@ class MainWindow(QMainWindow):
         self.open_report_button.setEnabled(False)
         self.open_report_button.clicked.connect(self.open_report)
 
-        content_layout.addWidget(self.open_report_button)
+        buttons_layout.addWidget(self.open_report_button)
+        buttons_layout.addStretch()
         
         self.results_panel = QFrame()
         self.results_panel.setStyleSheet("""
@@ -290,13 +297,58 @@ class MainWindow(QMainWindow):
             "color: #4ADE80; font-size: 18px; font-weight: bold;"
         )
 
-        self.results_details = QLabel()
-        self.results_details.setStyleSheet(
-            "color: #F4F4FA; font-size: 14px;"
-        )
-
+        
         results_layout.addWidget(self.results_title)
-        results_layout.addWidget(self.results_details)
+
+        stats_layout = QHBoxLayout()
+        stats_layout.setSpacing(12)
+
+        self.stat_labels = {}
+
+        for key, title in [
+            ("files", "Files"),
+            ("rows", "Rows"),
+            ("excluded", "Excluded"),
+        ]:
+            card = QFrame()
+            card.setObjectName("statCard")
+            card.setStyleSheet("""
+                QFrame#statCard {
+                    background-color: #292C40;
+                    border-radius: 10px;
+                }
+            """)
+
+            
+            card.setMinimumHeight(100)
+
+            card_layout = QVBoxLayout(card)
+            card_layout.setContentsMargins(12, 10, 12, 10)
+            card_layout.setSpacing(4)
+
+
+            value_label = QLabel("0")
+            value_label.setStyleSheet(
+                "color: white; font-size: 24px; font-weight: bold;"
+            )
+            value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            value_label.setMinimumHeight(36)
+
+            name_label = QLabel(title)
+            name_label.setStyleSheet(
+                "color: #A5A8BD; font-size: 12px;"
+            )
+            name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            name_label.setMinimumHeight(20)
+
+            card_layout.addWidget(value_label)
+            card_layout.addWidget(name_label)
+
+            self.stat_labels[key] = value_label
+            stats_layout.addWidget(card, 1)
+
+        results_layout.addLayout(stats_layout)
+
 
         self.results_panel.hide()
         content_layout.addWidget(self.results_panel)
@@ -552,11 +604,17 @@ class MainWindow(QMainWindow):
 
         result = self.merge_result
         
-        self.results_details.setText(
-            f"Files processed: {result['files']}\n"
-            f"Rows merged: {result['clean_rows']}\n"
-            f"Excluded rows: {result['excluded_rows']}"
-        )
+        self.stat_labels["files"].setText(
+                str(result["files"])
+)
+
+        self.stat_labels["rows"].setText(
+                str(result["clean_rows"])
+)
+
+        self.stat_labels["excluded"].setText(
+                str(result["excluded_rows"])
+)
 
         self.results_panel.show()
 
