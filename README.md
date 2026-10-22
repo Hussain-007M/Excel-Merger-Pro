@@ -51,7 +51,7 @@ pip install -r requirements.txt
 ## Run the Application
 
 ```bash
-python main_gui.py
+python modern_gui.py
 ```
 
 ## Platform
