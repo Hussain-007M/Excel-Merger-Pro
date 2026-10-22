@@ -1,10 +1,12 @@
 import sys
+from modern_join_gui import JoinWindow
 from pathlib import Path
 from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,
     QDialog,
+    QScrollArea,
     QListWidget,
     QMessageBox,
     QProgressBar,
@@ -180,6 +182,7 @@ class MainWindow(QMainWindow):
         merge_button.clicked.connect(self.select_files)
 
         join_button = QPushButton("Join Tables")
+        join_button.clicked.connect(self.open_join_window)
 
         sidebar_layout.addWidget(logo)
         sidebar_layout.addSpacing(35)
@@ -356,9 +359,62 @@ class MainWindow(QMainWindow):
 
         content_layout.addStretch()
 
+        
+        # Keep the sidebar fixed
         layout.addWidget(sidebar)
-        layout.addWidget(content, 1)
 
+        # Make the main content vertically scrollable
+        self.content_scroll = QScrollArea()
+        self.content_scroll.setWidgetResizable(True)
+
+        self.content_scroll.setVerticalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAsNeeded
+        )
+
+        self.content_scroll.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+
+        self.content_scroll.setFrameShape(
+            QFrame.Shape.NoFrame
+        )
+
+        self.content_scroll.setStyleSheet("""
+            QScrollArea {
+                background-color: #10111B;
+                border: none;
+            }
+
+            QScrollBar:vertical {
+                background: #1B1D2B;
+                width: 8px;
+                border: none;
+            }
+
+            QScrollBar::handle:vertical {
+                background: #444761;
+                border-radius: 4px;
+                min-height: 30px;
+            }
+
+            QScrollBar::add-line:vertical,
+            QScrollBar::sub-line:vertical {
+                height: 0px;
+            }
+        """)
+
+        self.content_scroll.setWidget(content)
+        layout.addWidget(self.content_scroll, 1)
+
+
+
+    def open_join_window(self):
+        if not hasattr(self, "join_window"):
+            self.join_window = JoinWindow()
+
+        self.join_window.show()
+        self.join_window.raise_()
+        self.join_window.activateWindow()
 
     
     def select_files(self):

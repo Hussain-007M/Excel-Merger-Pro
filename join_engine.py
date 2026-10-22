@@ -137,7 +137,7 @@ def join_tables(
         "customer_state": "Customer State",
     }
 
-    joined_export = joined.rename(columns=readable_names)
+    joined_export = joined.copy()
 
     if readable_ids:
         for column, prefix, new_name in [
@@ -207,19 +207,20 @@ def join_tables(
 
 
         
+        
         # Format headers
-        ws.row_dimensions[1].height = 42
+        ws.row_dimensions[1].height = 26
 
         for cell in ws[1]:
             cell.font = Font(
                 name="Aptos",
-                size=15,
+                size=11,
                 bold=True
             )
             cell.alignment = Alignment(
-                horizontal="center",
+                horizontal="left",
                 vertical="center",
-                wrap_text=True
+                wrap_text=False
             )
 
         # Format data
@@ -227,27 +228,33 @@ def join_tables(
             for cell in row:
                 cell.font = Font(
                     name="Aptos",
-                    size=13
+                    size=11
                 )
                 cell.alignment = Alignment(
                     vertical="center"
                 )
 
-        ws.sheet_format.defaultRowHeight = 25
+        ws.sheet_format.defaultRowHeight = 20
+
+
         
         # Adjust column widths
-        for col_index, col_name in enumerate(joined_export.columns, start=1):
+       
+        # Adjust column widths without changing data
+        for col_index, col_name in enumerate(
+            joined_export.columns, start=1
+        ):
             letter = get_column_letter(col_index)
             name = str(col_name)
 
-            if "ID" in name:
-                width = 44
-            elif "Date" in name:
-                width = 28
-            elif name == "Postal Code":
-                width = 18
+            if "id" in name.lower():
+                width = 40
             else:
-                width = min(max(len(name) + 6, 20), 32)
+                width = min(
+                    max(len(name) + 3, 16),
+                    40
+                )
 
             ws.column_dimensions[letter].width = width
+
 
