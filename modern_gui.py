@@ -4,6 +4,7 @@ from pathlib import Path
 from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtWidgets import (
     QApplication,
+    QStackedWidget,
     QFileDialog,
     QDialog,
     QScrollArea,
@@ -179,10 +180,10 @@ class MainWindow(QMainWindow):
         merge_button = QPushButton("Merge Files")
         self.merge_button = merge_button
 
-        merge_button.clicked.connect(self.select_files)
+        merge_button.clicked.connect(self.show_merge_page)
 
         join_button = QPushButton("Join Tables")
-        join_button.clicked.connect(self.open_join_window)
+        join_button.clicked.connect(self.show_join_page)
 
         sidebar_layout.addWidget(logo)
         sidebar_layout.addSpacing(35)
@@ -226,6 +227,10 @@ class MainWindow(QMainWindow):
         self.file_list.setFixedHeight(130)
         self.file_list.setMinimumHeight(160)
 
+        self.input_button = QPushButton("Choose Input Folder")
+        self.input_button.clicked.connect(self.select_files)
+
+        content_layout.addWidget(self.input_button)
         content_layout.addWidget(self.file_list)
         self.output_folder = ""
 
@@ -403,18 +408,33 @@ class MainWindow(QMainWindow):
             }
         """)
 
+       
         self.content_scroll.setWidget(content)
-        layout.addWidget(self.content_scroll, 1)
+
+        # Main workspace with two pages
+        self.pages = QStackedWidget()
+
+        # Page 1: Merge Files
+        self.pages.addWidget(self.content_scroll)
+
+        # Page 2: Join Tables
+        self.join_page = JoinWindow()
+        self.join_page.setMinimumSize(0, 0)
+        self.pages.addWidget(self.join_page)
+
+        self.pages.setCurrentIndex(0)
+
+        layout.addWidget(self.pages, 1)
 
 
 
-    def open_join_window(self):
-        if not hasattr(self, "join_window"):
-            self.join_window = JoinWindow()
+    
+    def show_merge_page(self):
+        self.pages.setCurrentIndex(0)
 
-        self.join_window.show()
-        self.join_window.raise_()
-        self.join_window.activateWindow()
+    def show_join_page(self):
+        self.pages.setCurrentIndex(1)
+
 
     
     def select_files(self):
@@ -715,6 +735,20 @@ class MainWindow(QMainWindow):
             event.ignore()
             return
 
+
+
+        join_worker = getattr(self.join_page, "join_worker", None)
+
+        if join_worker is not None and join_worker.isRunning():
+            QMessageBox.warning(
+                self,
+                "Join In Progress",
+                "Please wait until the JOIN operation finishes."
+            )
+            event.ignore()
+            return
+
+       
         super().closeEvent(event)
 
     
