@@ -42,7 +42,11 @@ Excel Merger Pro helps users combine multiple datasets, join related tables, and
 
 ## Installation
 
-Requires Python 3 and a working Tkinter installation.
+Running from source requires Python 3 and the dependencies
+listed in requirements.txt, including PySide6.
+
+The packaged Windows application does not require Python
+to be installed separately.
 
 ```bash
 pip install -r requirements.txt
