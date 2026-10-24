@@ -1,16 +1,24 @@
-# Python cache
+# Python caches
 __pycache__/
 *.py[cod]
+.pytest_cache/
 
 # Virtual environments
 .venv/
 venv/
 env/
 
-# PyInstaller build files
+# PyInstaller build output (including experimental build folders)
 build/
+build_*/
 dist/
+dist_*/
 *.exe
+*.zip
+
+# Keep the reproducible release configuration, ignore temporary specs
+*.spec
+!ExcelMergerPro-Release.spec
 
 # Generated Excel reports
 *_output/
