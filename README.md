@@ -2,7 +2,7 @@
 
 A Windows desktop application for combining Excel and CSV files and joining related tables through a modern PySide6 interface.
 
-**Project status:** Modern desktop version tested locally on Windows. The published [v3.3.0 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0) is an **earlier build** and does not represent the latest development branch. A new downloadable release has not been published yet.
+**Project status:** Modern PySide6 desktop version validated with automated tests and locally tested Windows builds. The published [v3.3.0 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0) is an **earlier build**, not the modern desktop version. A new modern Windows download has not yet been published.
 
 ## Features
 
@@ -40,16 +40,18 @@ Select **Merge Files** or **Join Tables** in the sidebar. Select input data and 
 
 ## Tests
 
+[![Python tests](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/tests.yml/badge.svg)](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/tests.yml)
+
 ```powershell
 python -m pip install pytest
 python -m pytest -q
 ```
 
-The development branch has 22 locally passing tests as of October 2026. Tests cover data types, suggestions, merging, and core joining behavior. This does **not** mean all production edge cases are verified.
+The modern desktop code has 22 passing automated tests as of October 2026 (locally and in GitHub Actions). Tests cover data types, suggestions, merging, and core joining behavior. This does **not** mean all production edge cases are verified.
 
 ## Windows build
 
-The development branch includes a PyInstaller spec for a folder-based, windowed Windows build:
+The repository includes a PyInstaller spec for a folder-based, windowed Windows build:
 
 ```powershell
 python -m PyInstaller --noconfirm --workpath "$env:TEMP\ExcelMergerPro_build" --distpath ".\dist_release" ExcelMergerPro-Release.spec
@@ -71,8 +73,9 @@ Screenshots currently in the repository may show the earlier interface. Updated 
 
 ## Branches and releases
 
-- `main`: previous published source and version 3.3.0 release.
-- `develop/modern-desktop`: modern PySide6 interface, automated tests, and release-build configuration.
+- `main`: current repository code, including the modern PySide6 desktop application.
+- `develop/modern-desktop`: development branch for ongoing work.
+- The `v3.3.0` release remains available as an earlier, separate downloadable build.
 - [Releases](https://github.com/Hussain-007M/Excel-Merger-Pro/releases): downloadable builds and release notes.
 
 **Data handling:** Source files are read for processing; output is written separately to the user-selected folder. Review joins and output columns before relying on reports for business-critical work.
