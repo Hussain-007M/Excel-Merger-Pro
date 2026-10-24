@@ -1,4 +1,5 @@
 import sys
+from PySide6.QtGui import QIcon
 from modern_join_gui import JoinWindow
 from pathlib import Path
 from PySide6.QtCore import Qt, QThread, Signal
@@ -754,6 +755,12 @@ class MainWindow(QMainWindow):
     
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    icon_path = Path(__file__).resolve().parent / "ExcelMergerPro.ico"
+    app.setWindowIcon(QIcon(str(icon_path)))
+
     window = MainWindow()
+    window.setWindowIcon(QIcon(str(icon_path)))
     window.show()
+
     sys.exit(app.exec())
