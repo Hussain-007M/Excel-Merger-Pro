@@ -2,7 +2,11 @@
 
 A Windows desktop application for combining Excel and CSV files and joining related tables through a modern PySide6 interface.
 
-**Project status:** Modern PySide6 desktop version validated with automated tests and locally tested Windows builds. The published [v3.3.0 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0) is an **earlier build**, not the modern desktop version. A new modern Windows download has not yet been published.
+[![Download Windows Beta](https://img.shields.io/badge/Download-v3.4.0%20Beta-7B2CBF?style=for-the-badge&logo=windows)](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/download/v3.4.0-beta.1/ExcelMergerPro-Modern-Windows.zip)
+
+**Latest modern Windows beta:** [v3.4.0-beta.1](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.4.0-beta.1) | **Status:** Pre-release | **Platform:** Windows | **Python installation:** Not required for the packaged application.
+
+The previous [v3.3.0 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0) remains available as an earlier version.
 
 ## Features
 
@@ -26,6 +30,15 @@ A Windows desktop application for combining Excel and CSV files and joining rela
 ## Technologies
 
 Python, PySide6 (Qt), pandas, openpyxl, pytest, and PyInstaller.
+
+## Install the Windows beta
+
+1. Download [ExcelMergerPro-Modern-Windows.zip](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/download/v3.4.0-beta.1/ExcelMergerPro-Modern-Windows.zip).
+2. Extract the ZIP file completely.
+3. Open the extracted `ExcelMergerPro-Release` directory.
+4. Run `ExcelMergerPro-Release.exe`; keep the `_internal` folder beside it.
+
+The beta has been locally tested on Windows. Additional testing on other Windows computers is recommended before production use. Windows may warn about an unsigned application; review any security warning rather than bypassing protections blindly.
 
 ## Run from source
 
@@ -75,7 +88,8 @@ Screenshots currently in the repository may show the earlier interface. Updated 
 
 - `main`: current repository code, including the modern PySide6 desktop application.
 - `develop/modern-desktop`: development branch for ongoing work.
-- The `v3.3.0` release remains available as an earlier, separate downloadable build.
+- [v3.4.0 Beta](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.4.0-beta.1): modern Windows ZIP package (pre-release).
+- [v3.3.0](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0): earlier Windows executable.
 - [Releases](https://github.com/Hussain-007M/Excel-Merger-Pro/releases): downloadable builds and release notes.
 
 **Data handling:** Source files are read for processing; output is written separately to the user-selected folder. Review joins and output columns before relying on reports for business-critical work.
