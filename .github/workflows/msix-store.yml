@@ -1,0 +1,60 @@
+name: Microsoft Store MSIX package
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package-msix:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pytest pillow
+
+      - name: Run automated tests
+        run: python -m pytest -q test_data_types.py test_type_suggestions.py test_merge_integration.py test_join_engine.py
+
+      - name: Build Windows application
+        run: python -m PyInstaller --noconfirm --clean --workpath build_msix_ci --distpath dist ExcelMergerPro-Release.spec
+
+      - name: Stage MSIX package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "msix_stage" | Out-Null
+          Copy-Item -Path "dist/ExcelMergerPro-Release/*" -Destination "msix_stage" -Recurse -Force
+          Copy-Item "packaging/msix/AppxManifest.xml" "msix_stage/AppxManifest.xml"
+          python packaging/msix/make_assets.py ExcelMergerPro.ico msix_stage/Assets
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Create unsigned MSIX for Partner Center
+        shell: pwsh
+        run: |
+          $sdk = "${env:ProgramFiles(x86)}\Windows Kits\10\bin"
+          $makeappx = Get-ChildItem $sdk -Recurse -Filter MakeAppx.exe |
+            Where-Object { $_.FullName -match '\\x64\\MakeAppx\.exe$' } |
+            Sort-Object FullName -Descending |
+            Select-Object -First 1 -ExpandProperty FullName
+          if (-not $makeappx) { throw "Windows SDK MakeAppx.exe not found" }
+          & $makeappx pack /d msix_stage /p ExcelMergerPro-Store-3.4.0.0.msix /o
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload unsigned Store MSIX
+        uses: actions/upload-artifact@v4
+        with:
+          name: ExcelMergerPro-Store-MSIX-unsigned
+          path: ExcelMergerPro-Store-3.4.0.0.msix
+          if-no-files-found: error
