@@ -197,6 +197,12 @@ class MainWindow(QMainWindow):
         sidebar_layout.addWidget(version)
 
         content = QWidget()
+        content.setObjectName("mergeContent")
+        content.setStyleSheet("""
+    QWidget#mergeContent {
+        background-color: #10111B;
+    }
+""")
         content_layout = QVBoxLayout(content)
         content_layout.setSpacing(18)
 
