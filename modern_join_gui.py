@@ -78,7 +78,7 @@ class JoinWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Excel Merger Pro | Join Tables")
+        self.setWindowTitle("Tabrion | Join Tables")
         self.resize(950, 650)
         self.setMinimumSize(750, 550)
 

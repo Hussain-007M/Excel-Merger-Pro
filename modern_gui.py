@@ -115,7 +115,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Excel Merger Pro | Modern")
+        self.setWindowTitle("Tabrion")
         self.resize(1100, 700)
         self.setMinimumSize(850, 550)
 
@@ -173,7 +173,7 @@ class MainWindow(QMainWindow):
         sidebar_layout.setContentsMargins(18, 25, 18, 25)
         sidebar_layout.setSpacing(12)
 
-        logo = QLabel("◆  EXCEL MERGER")
+        logo = QLabel("◆ TABRION")
         logo.setStyleSheet(
             "font-size: 17px; font-weight: bold;"
         )
@@ -192,7 +192,7 @@ class MainWindow(QMainWindow):
         sidebar_layout.addWidget(join_button)
         sidebar_layout.addStretch()
 
-        version = QLabel("Modern UI Preview")
+        version = QLabel("Free • Offline")
         version.setStyleSheet("color: #9295AD;")
         sidebar_layout.addWidget(version)
 
@@ -206,7 +206,7 @@ class MainWindow(QMainWindow):
         content_layout = QVBoxLayout(content)
         content_layout.setSpacing(18)
 
-        title = QLabel("Welcome to Excel Merger Pro")
+        title = QLabel("Welcome to Tabrion")
         title.setStyleSheet(
             "font-size: 29px; font-weight: bold;"
         )
