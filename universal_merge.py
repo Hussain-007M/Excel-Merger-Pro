@@ -444,7 +444,7 @@ def merge_files(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Excel Merger Pro v3"
+        description="Tabrion v3"
     )
 
     parser.add_argument(

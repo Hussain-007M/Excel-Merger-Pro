@@ -23,7 +23,7 @@ class ColumnTypesDialog(QDialog):
         self.suggestions = suggestions
         self.choices = {}
 
-        self.setWindowTitle("Excel Merger Pro | Column Types")
+        self.setWindowTitle("Tabrion | Column Types")
         self.resize(760, 520)
 
         self.setStyleSheet("""
