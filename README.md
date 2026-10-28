@@ -4,7 +4,7 @@
 
 Tabrion is a free Windows desktop application built with Python and PySide6. It helps you combine Excel and CSV files, connect related tables, and review data types through a straightforward interface, without needing to write code.
 
-[![Python tests](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/tests.yml/badge.svg)](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/tests.yml)
+[![Python tests](https://github.com/Hussain-007M/Tabrion/actions/workflows/tests.yml/badge.svg)](https://github.com/Hussain-007M/Tabrion/actions/workflows/tests.yml)
 ![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-5A52C8)
 ![Version](https://img.shields.io/badge/Version-3.4.1-8957E5)
 ![License](https://img.shields.io/badge/Access-Free-2DA44E)
@@ -61,20 +61,20 @@ The project has **22 passing automated tests** as of October 2026, including che
 
 ### Current Tabrion version: 3.4.1.0
 
-The Microsoft Store MSIX build is produced by the [Microsoft Store packaging workflow](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/msix-store.yml). The unsigned MSIX is for Partner Center submission; do not treat it as a signed, public installer.
+The Microsoft Store MSIX build is produced by the [Microsoft Store packaging workflow](https://github.com/Hussain-007M/Tabrion/actions/workflows/msix-store.yml). The unsigned MSIX is for Partner Center submission; do not treat it as a signed, public installer.
 
 ### Earlier downloadable beta (legacy branding)
 
-The [v3.4.0-beta.1 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.4.0-beta.1) is an **older pre-release** distributed under the former name **Excel Merger Pro**. It is not the current Tabrion 3.4.1 build.
+The [v3.4.0-beta.1 release](https://github.com/Hussain-007M/Tabrion/releases/tag/v3.4.0-beta.1) is an **older pre-release** distributed under the former name **Excel Merger Pro**. It is not the current Tabrion 3.4.1 build.
 
-[Download the older Windows beta ZIP](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/download/v3.4.0-beta.1/ExcelMergerPro-Modern-Windows.zip).
+[Download the older Windows beta ZIP](https://github.com/Hussain-007M/Tabrion/releases/download/v3.4.0-beta.1/ExcelMergerPro-Modern-Windows.zip).
 
 For that older ZIP only:
 1. Extract the archive completely.
 2. Open the `ExcelMergerPro-Release` folder.
 3. Run `ExcelMergerPro-Release.exe`, keeping the `_internal` folder alongside it.
 
-The [v3.3.0 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0) is also preserved for historical reference. Windows may warn about unsigned older builds; do not bypass system protections without verifying a file's origin.
+The [v3.3.0 release](https://github.com/Hussain-007M/Tabrion/releases/tag/v3.3.0) is also preserved for historical reference. Windows may warn about unsigned older builds; do not bypass system protections without verifying a file's origin.
 
 ## Screenshots
 
@@ -86,7 +86,7 @@ Tabrion runs locally. It reads source spreadsheets from your computer and create
 
 ## Project notes
 
-- The repository retains its historical URL, `Hussain-007M/Excel-Merger-Pro`, to preserve existing links.
+- The repository retains its historical URL, `Hussain-007M/Tabrion`, to preserve existing links.
 - The user-facing product name is **Tabrion**.
 - Core code and historical releases are kept separate from Store certification packaging.
 
