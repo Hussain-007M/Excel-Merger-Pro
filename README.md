@@ -2,92 +2,64 @@
 
 **Merge files. Join tables. Simplify data preparation.**
 
-Tabrion is a free Windows desktop application built with Python and PySide6. It helps you combine Excel and CSV files, connect related tables, and review data types through a straightforward interface, without needing to write code.
+Tabrion is a free Windows desktop application for combining Excel and CSV files, joining related tables, and preparing spreadsheet data without writing code.
 
-[![Python tests](https://github.com/Hussain-007M/Tabrion/actions/workflows/tests.yml/badge.svg)](https://github.com/Hussain-007M/Tabrion/actions/workflows/tests.yml)
-![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-5A52C8)
 ![Version](https://img.shields.io/badge/Version-3.4.1-8957E5)
-![License](https://img.shields.io/badge/Access-Free-2DA44E)
+![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-5A52C8)
+![Access](https://img.shields.io/badge/Access-Free-2DA44E)
+[![Python tests](https://github.com/Hussain-007M/Tabrion/actions/workflows/tests.yml/badge.svg)](https://github.com/Hussain-007M/Tabrion/actions/workflows/tests.yml)
 
-> **Microsoft Store status:** Tabrion 3.4.1.0 was submitted for certification on October 28, 2026. It is **not yet approved or published** in the Store. The MSIX artifact produced by GitHub Actions is unsigned and intended for Partner Center submission, not direct installation.
+> **Microsoft Store:** Tabrion 3.4.1.0 passed certification on October 28, 2026 and is awaiting publication. It is not yet listed as publicly available.
 
-## What Tabrion does
+## Features
 
 ### Merge Files
-- Combine multiple `.xlsx` and `.csv` files from a selected folder into one Excel workbook.
-- Inspect columns and review suggested data types before processing.
-- See file, row, and exclusion counts in the interface.
-- Export the result and open the generated report.
+- Combine multiple CSV and XLSX files from a selected folder.
+- Review suggested column types before processing.
+- Export the merged data to an Excel workbook.
+- Track processed file and row counts, and open the output report.
 
 ### Join Tables
-- Connect two Excel or CSV tables by matching selected key columns.
+- Join two Excel or CSV datasets by matching key columns.
 - Choose **Left Join** or **Inner Join**.
-- Review matched, unmatched, and resulting row counts.
-- Detect duplicate keys in the right table to reduce unintended row multiplication.
-- Preserve original input files; results are written separately.
+- See matched, unmatched, and joined-row counts.
+- Detect duplicate right-side join keys to reduce unexpected row multiplication.
+- Leave the original source files unchanged.
 
-**Merge** appends rows from multiple files. **Join** combines related records using shared keys.
+**Merge** appends rows from multiple datasets. **Join** connects related records using matching keys.
 
-## Built with
+## Technology
 
-- **Python**, **PySide6 (Qt)** for the Windows desktop interface
-- **pandas** and **openpyxl** for spreadsheet processing
-- **pytest** for automated tests
-- **PyInstaller** and **MSIX** packaging through GitHub Actions
+**Python** · **PySide6** · **pandas** · **openpyxl** · **pytest** · **PyInstaller** · **MSIX**
 
 ## Run from source
 
-Use Python in a virtual environment on Windows:
+On Windows with Python installed:
 
 ```powershell
 python -m pip install -r requirements.txt
 python modern_gui.py
 ```
 
-Choose **Merge Files** or **Join Tables** from the sidebar, select the input data, and specify an output location.
-
-## Quality checks
-
-Run the automated tests:
+## Run automated tests
 
 ```powershell
 python -m pip install pytest
 python -m pytest -q test_data_types.py test_type_suggestions.py test_merge_integration.py test_join_engine.py
 ```
 
-The project has **22 passing automated tests** as of October 2026, including checks for data types, suggestions, merging, and joining. Automated tests do not guarantee that every real-world dataset or edge case is covered.
+The project has **22 passing automated tests** as of October 2026. Testing covers data types, suggestions, merging, and joining, but does not verify every production edge case.
 
-## Windows builds and releases
+## Distribution
 
-### Current Tabrion version: 3.4.1.0
+Tabrion is prepared for Microsoft Store distribution. Its [MSIX packaging workflow](https://github.com/Hussain-007M/Tabrion/actions/workflows/msix-store.yml) generates an unsigned submission artifact for Partner Center. This artifact is **not a signed installer for direct distribution**.
 
-The Microsoft Store MSIX build is produced by the [Microsoft Store packaging workflow](https://github.com/Hussain-007M/Tabrion/actions/workflows/msix-store.yml). The unsigned MSIX is for Partner Center submission; do not treat it as a signed, public installer.
+A public Microsoft Store link will be added after publication.
 
-### Earlier downloadable beta (legacy branding)
+## Local data processing
 
-The [v3.4.0-beta.1 release](https://github.com/Hussain-007M/Tabrion/releases/tag/v3.4.0-beta.1) is an **older pre-release** distributed under the former name **Excel Merger Pro**. It is not the current Tabrion 3.4.1 build.
+Tabrion operates on your Windows computer. It reads spreadsheet inputs locally and saves generated reports to a user-selected output location. Source files are not uploaded to an external service during processing.
 
-[Download the older Windows beta ZIP](https://github.com/Hussain-007M/Tabrion/releases/download/v3.4.0-beta.1/ExcelMergerPro-Modern-Windows.zip).
+## Developer
 
-For that older ZIP only:
-1. Extract the archive completely.
-2. Open the `ExcelMergerPro-Release` folder.
-3. Run `ExcelMergerPro-Release.exe`, keeping the `_internal` folder alongside it.
-
-The [v3.3.0 release](https://github.com/Hussain-007M/Tabrion/releases/tag/v3.3.0) is also preserved for historical reference. Windows may warn about unsigned older builds; do not bypass system protections without verifying a file's origin.
-
-## Screenshots
-
-New Tabrion screenshots are being prepared for the repository. Images currently stored under [`screenshots/`](screenshots/) may show an earlier interface or branding; they are not representations of the latest Store submission.
-
-## Data handling
-
-Tabrion runs locally. It reads source spreadsheets from your computer and creates output reports in your selected location rather than uploading source files to a cloud service. Review your join keys and resulting columns before using exports for business-critical decisions.
-
-## Project notes
-
-- The repository retains its historical URL, `Hussain-007M/Tabrion`, to preserve existing links.
-- The user-facing product name is **Tabrion**.
-- Core code and historical releases are kept separate from Store certification packaging.
-
-**Developer:** [Hussain-007M](https://github.com/Hussain-007M)
+Built and maintained by [Hussain-007M](https://github.com/Hussain-007M).
