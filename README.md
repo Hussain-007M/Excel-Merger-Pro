@@ -1,95 +1,93 @@
-# Excel Merger Pro
+# Tabrion
 
-A Windows desktop application for combining Excel and CSV files and joining related tables through a modern PySide6 interface.
+**Merge files. Join tables. Simplify data preparation.**
 
-[![Download Windows Beta](https://img.shields.io/badge/Download-v3.4.0%20Beta-7B2CBF?style=for-the-badge&logo=windows)](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/download/v3.4.0-beta.1/ExcelMergerPro-Modern-Windows.zip)
+Tabrion is a free Windows desktop application built with Python and PySide6. It helps you combine Excel and CSV files, connect related tables, and review data types through a straightforward interface, without needing to write code.
 
-**Latest modern Windows beta:** [v3.4.0-beta.1](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.4.0-beta.1) | **Status:** Pre-release | **Platform:** Windows | **Python installation:** Not required for the packaged application.
+[![Python tests](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/tests.yml/badge.svg)](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/tests.yml)
+![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-5A52C8)
+![Version](https://img.shields.io/badge/Version-3.4.1-8957E5)
+![License](https://img.shields.io/badge/Access-Free-2DA44E)
 
-The previous [v3.3.0 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0) remains available as an earlier version.
+> **Microsoft Store status:** Tabrion 3.4.1.0 was submitted for certification on October 28, 2026. It is **not yet approved or published** in the Store. The MSIX artifact produced by GitHub Actions is unsigned and intended for Partner Center submission, not direct installation.
 
-## Features
+## What Tabrion does
 
 ### Merge Files
-- Combine CSV and XLSX files from a selected folder.
-- Inspect columns and review suggested data types before merging.
-- Export an Excel workbook with a merge summary and processed rows.
-- View processing counts and open the report from the interface.
+- Combine multiple `.xlsx` and `.csv` files from a selected folder into one Excel workbook.
+- Inspect columns and review suggested data types before processing.
+- See file, row, and exclusion counts in the interface.
+- Export the result and open the generated report.
 
 ### Join Tables
-- Join two CSV or XLSX tables using selected key columns.
-- Choose a LEFT or INNER join.
-- Display matched, unmatched and joined-row counts.
-- Reject duplicate keys in the right table to prevent unintended multiplication.
-- Preserve the original input files. Existing identifiers are not replaced in the normal workflow.
+- Connect two Excel or CSV tables by matching selected key columns.
+- Choose **Left Join** or **Inner Join**.
+- Review matched, unmatched, and resulting row counts.
+- Detect duplicate keys in the right table to reduce unintended row multiplication.
+- Preserve original input files; results are written separately.
 
-## Merge vs Join
+**Merge** appends rows from multiple files. **Join** combines related records using shared keys.
 
-**Merge Files** appends rows from input files. **Join Tables** combines related records using matching key values.
+## Built with
 
-## Technologies
-
-Python, PySide6 (Qt), pandas, openpyxl, pytest, and PyInstaller.
-
-## Install the Windows beta
-
-1. Download [ExcelMergerPro-Modern-Windows.zip](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/download/v3.4.0-beta.1/ExcelMergerPro-Modern-Windows.zip).
-2. Extract the ZIP file completely.
-3. Open the extracted `ExcelMergerPro-Release` directory.
-4. Run `ExcelMergerPro-Release.exe`; keep the `_internal` folder beside it.
-
-The beta has been locally tested on Windows. Additional testing on other Windows computers is recommended before production use. Windows may warn about an unsigned application; review any security warning rather than bypassing protections blindly.
+- **Python**, **PySide6 (Qt)** for the Windows desktop interface
+- **pandas** and **openpyxl** for spreadsheet processing
+- **pytest** for automated tests
+- **PyInstaller** and **MSIX** packaging through GitHub Actions
 
 ## Run from source
 
-On Windows, in a virtual environment:
+Use Python in a virtual environment on Windows:
 
 ```powershell
 python -m pip install -r requirements.txt
 python modern_gui.py
 ```
 
-Select **Merge Files** or **Join Tables** in the sidebar. Select input data and an output folder; the application writes an Excel report to the chosen output location.
+Choose **Merge Files** or **Join Tables** from the sidebar, select the input data, and specify an output location.
 
-## Tests
+## Quality checks
 
-[![Python tests](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/tests.yml/badge.svg)](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/tests.yml)
+Run the automated tests:
 
 ```powershell
 python -m pip install pytest
-python -m pytest -q
+python -m pytest -q test_data_types.py test_type_suggestions.py test_merge_integration.py test_join_engine.py
 ```
 
-The modern desktop code has 22 passing automated tests as of October 2026 (locally and in GitHub Actions). Tests cover data types, suggestions, merging, and core joining behavior. This does **not** mean all production edge cases are verified.
+The project has **22 passing automated tests** as of October 2026, including checks for data types, suggestions, merging, and joining. Automated tests do not guarantee that every real-world dataset or edge case is covered.
 
-## Windows build
+## Windows builds and releases
 
-The repository includes a PyInstaller spec for a folder-based, windowed Windows build:
+### Current Tabrion version: 3.4.1.0
 
-```powershell
-python -m PyInstaller --noconfirm --workpath "$env:TEMP\ExcelMergerPro_build" --distpath ".\dist_release" ExcelMergerPro-Release.spec
-```
+The Microsoft Store MSIX build is produced by the [Microsoft Store packaging workflow](https://github.com/Hussain-007M/Excel-Merger-Pro/actions/workflows/msix-store.yml). The unsigned MSIX is for Partner Center submission; do not treat it as a signed, public installer.
 
-Run `dist_release\ExcelMergerPro-Release\ExcelMergerPro-Release.exe`, keeping the accompanying `_internal` directory intact. The folder-based build was tested locally, but should also be validated on a separate Windows machine before public distribution.
+### Earlier downloadable beta (legacy branding)
+
+The [v3.4.0-beta.1 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.4.0-beta.1) is an **older pre-release** distributed under the former name **Excel Merger Pro**. It is not the current Tabrion 3.4.1 build.
+
+[Download the older Windows beta ZIP](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/download/v3.4.0-beta.1/ExcelMergerPro-Modern-Windows.zip).
+
+For that older ZIP only:
+1. Extract the archive completely.
+2. Open the `ExcelMergerPro-Release` folder.
+3. Run `ExcelMergerPro-Release.exe`, keeping the `_internal` folder alongside it.
+
+The [v3.3.0 release](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0) is also preserved for historical reference. Windows may warn about unsigned older builds; do not bypass system protections without verifying a file's origin.
 
 ## Screenshots
 
-Screenshots currently in the repository may show the earlier interface. Updated captures of the modern release are planned.
+New Tabrion screenshots are being prepared for the repository. Images currently stored under [`screenshots/`](screenshots/) may show an earlier interface or branding; they are not representations of the latest Store submission.
 
-![Main interface](screenshots/main_interface.png)
+## Data handling
 
-![Merge interface](screenshots/merge_interface.png)
+Tabrion runs locally. It reads source spreadsheets from your computer and creates output reports in your selected location rather than uploading source files to a cloud service. Review your join keys and resulting columns before using exports for business-critical decisions.
 
-![Join interface](screenshots/join_interface.png)
+## Project notes
 
-![Excel report](screenshots/excel_report.png)
+- The repository retains its historical URL, `Hussain-007M/Excel-Merger-Pro`, to preserve existing links.
+- The user-facing product name is **Tabrion**.
+- Core code and historical releases are kept separate from Store certification packaging.
 
-## Branches and releases
-
-- `main`: current repository code, including the modern PySide6 desktop application.
-- `develop/modern-desktop`: development branch for ongoing work.
-- [v3.4.0 Beta](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.4.0-beta.1): modern Windows ZIP package (pre-release).
-- [v3.3.0](https://github.com/Hussain-007M/Excel-Merger-Pro/releases/tag/v3.3.0): earlier Windows executable.
-- [Releases](https://github.com/Hussain-007M/Excel-Merger-Pro/releases): downloadable builds and release notes.
-
-**Data handling:** Source files are read for processing; output is written separately to the user-selected folder. Review joins and output columns before relying on reports for business-critical work.
+**Developer:** [Hussain-007M](https://github.com/Hussain-007M)
