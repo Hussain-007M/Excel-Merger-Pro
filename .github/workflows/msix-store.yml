@@ -49,12 +49,12 @@ jobs:
             Sort-Object FullName -Descending |
             Select-Object -First 1 -ExpandProperty FullName
           if (-not $makeappx) { throw "Windows SDK MakeAppx.exe not found" }
-          & $makeappx pack /d msix_stage /p ExcelMergerPro-Store-3.4.0.0.msix /o
+          & $makeappx pack /d msix_stage /p Tabrion-Store-3.4.1.0.msix /o
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Upload unsigned Store MSIX
         uses: actions/upload-artifact@v4
         with:
-          name: ExcelMergerPro-Store-MSIX-unsigned
-          path: ExcelMergerPro-Store-3.4.0.0.msix
+          name: Tabrion-Store-MSIX-unsigned
+          path: Tabrion-Store-3.4.1.0.msix
           if-no-files-found: error

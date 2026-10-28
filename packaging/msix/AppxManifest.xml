@@ -7,7 +7,7 @@
   <Identity
     Name="ALHUSSAINALBURAEE.ExcelMergerPro"
     Publisher="CN=6260EB0C-6F1C-423C-B0F6-BD189A252B27"
-    Version="3.4.0.0"
+    Version="3.4.1.0"
     ProcessorArchitecture="x64" />
   <Properties>
     <DisplayName>Tabrion</DisplayName>
