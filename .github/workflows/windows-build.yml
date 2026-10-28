@@ -8,9 +8,9 @@ on:
     paths:
       - '**/*.py'
       - 'requirements.txt'
-      - 'ExcelMergerPro-Release.spec'
-      - 'ExcelMergerPro-Setup.iss'
-      - 'ExcelMergerPro.ico'
+      - 'Tabrion.spec'
+      - 'Tabrion-Setup.iss'
+      - 'Tabrion.ico'
       - '.github/workflows/windows-build.yml'
 
 permissions:
@@ -39,11 +39,11 @@ jobs:
         run: python -m pytest -q test_data_types.py test_type_suggestions.py test_merge_integration.py test_join_engine.py
 
       - name: Build Windows application
-        run: python -m PyInstaller --noconfirm --clean --workpath build_ci --distpath dist ExcelMergerPro-Release.spec
+        run: python -m PyInstaller --noconfirm --clean --workpath build_ci --distpath dist Tabrion.spec
 
       - name: Archive portable Windows build
         shell: pwsh
-        run: Compress-Archive -Path "dist\ExcelMergerPro-Release" -DestinationPath "ExcelMergerPro-Windows.zip" -Force
+        run: Compress-Archive -Path "dist\ExcelMergerPro-Release" -DestinationPath "Tabrion-Windows.zip" -Force
 
       - name: Install Inno Setup
         shell: pwsh
@@ -54,19 +54,19 @@ jobs:
         run: |
           $compiler = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
           if (-not (Test-Path $compiler)) { throw "Inno Setup compiler not found at $compiler" }
-          & $compiler "ExcelMergerPro-Setup.iss"
+          & $compiler "Tabrion-Setup.iss"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Upload portable build
         uses: actions/upload-artifact@v4
         with:
-          name: ExcelMergerPro-Windows-ZIP
-          path: ExcelMergerPro-Windows.zip
+          name: Tabrion-Windows-ZIP
+          path: Tabrion-Windows.zip
           if-no-files-found: error
 
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
-          name: ExcelMergerPro-Windows-Setup
-          path: installer_output/ExcelMergerPro-Setup-*.exe
+          name: Tabrion-Windows-Setup
+          path: installer_output/Tabrion-Setup-*.exe
           if-no-files-found: error

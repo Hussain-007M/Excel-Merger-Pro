@@ -5,7 +5,7 @@ a = Analysis(
     ['modern_gui.py'],
     pathex=[],
     binaries=[],
-    datas=[('ExcelMergerPro.ico', '.')],
+    datas=[('Tabrion.ico', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -32,7 +32,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['ExcelMergerPro.ico'],
+    icon=['Tabrion.ico'],
 )
 coll = COLLECT(
     exe,

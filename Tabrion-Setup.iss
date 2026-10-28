@@ -1,6 +1,6 @@
-#define MyAppName "Excel Merger Pro"
+#define MyAppName "Tabrion"
 #ifndef MyAppVersion
-  #define MyAppVersion "3.4.0-beta.2"
+  #define MyAppVersion "3.4.1"
 #endif
 #define MyAppExeName "ExcelMergerPro-Release.exe"
 
@@ -8,16 +8,16 @@
 AppId={{A66AB126-B570-4239-BBDF-E729E8B1F3B2}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-AppPublisher=Excel Merger Pro
-DefaultDirName={localappdata}\Programs\ExcelMergerPro
+AppPublisher=ALHUSSAIN, ALBURAEE
+DefaultDirName={localappdata}\Programs\Tabrion
 DefaultGroupName={#MyAppName}
 PrivilegesRequired=lowest
 OutputDir=installer_output
-OutputBaseFilename=ExcelMergerPro-Setup-{#MyAppVersion}
+OutputBaseFilename=Tabrion-Setup-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-SetupIconFile=ExcelMergerPro.ico
+SetupIconFile=Tabrion.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 ArchitecturesAllowed=x64compatible
 
