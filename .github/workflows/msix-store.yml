@@ -29,7 +29,7 @@ jobs:
         run: python -m pytest -q test_data_types.py test_type_suggestions.py test_merge_integration.py test_join_engine.py
 
       - name: Build Windows application
-        run: python -m PyInstaller --noconfirm --clean --workpath build_msix_ci --distpath dist ExcelMergerPro-Release.spec
+        run: python -m PyInstaller --noconfirm --clean --workpath build_msix_ci --distpath dist Tabrion.spec
 
       - name: Stage MSIX package
         shell: pwsh
@@ -37,7 +37,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path "msix_stage" | Out-Null
           Copy-Item -Path "dist/ExcelMergerPro-Release/*" -Destination "msix_stage" -Recurse -Force
           Copy-Item "packaging/msix/AppxManifest.xml" "msix_stage/AppxManifest.xml"
-          python packaging/msix/make_assets.py ExcelMergerPro.ico msix_stage/Assets
+          python packaging/msix/make_assets.py Tabrion.ico msix_stage/Assets
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Create unsigned MSIX for Partner Center
