@@ -9,7 +9,7 @@ Tabrion is a free Windows desktop application for combining Excel and CSV files,
 ![Access](https://img.shields.io/badge/Access-Free-2DA44E)
 [![Python tests](https://github.com/Hussain-007M/Tabrion/actions/workflows/tests.yml/badge.svg)](https://github.com/Hussain-007M/Tabrion/actions/workflows/tests.yml)
 
-> **Microsoft Store:** Tabrion 3.4.1.0 passed certification on October 28, 2026 and is awaiting publication. It is not yet listed as publicly available.
+> **Available on Microsoft Store:** [Get Tabrion for Windows](https://apps.microsoft.com/detail/9N3JNHRFQ9BL). Tabrion v3.4.1.0 passed Microsoft Store certification and was published in October 2026.
 
 ## Screenshots
 
@@ -68,9 +68,9 @@ The project has **22 passing automated tests** as of October 2026. Testing cover
 
 ## Distribution
 
-Tabrion is prepared for Microsoft Store distribution. Its [MSIX packaging workflow](https://github.com/Hussain-007M/Tabrion/actions/workflows/msix-store.yml) generates an unsigned submission artifact for Partner Center. This artifact is **not a signed installer for direct distribution**.
+Download Tabrion through the official [Microsoft Store listing](https://apps.microsoft.com/detail/9N3JNHRFQ9BL).
 
-A public Microsoft Store link will be added after publication.
+The [MSIX packaging workflow](https://github.com/Hussain-007M/Tabrion/actions/workflows/msix-store.yml) generates an unsigned submission artifact for Partner Center. This artifact is **not a signed installer for direct distribution**.
 
 ## Local data processing
 
