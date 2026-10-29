@@ -11,6 +11,22 @@ Tabrion is a free Windows desktop application for combining Excel and CSV files,
 
 > **Microsoft Store:** Tabrion 3.4.1.0 passed certification on October 28, 2026 and is awaiting publication. It is not yet listed as publicly available.
 
+## Screenshots
+
+### Welcome to Tabrion
+
+![Tabrion home screen](screenshots/tabrion_home.png)
+
+### Merge files and join tables
+
+| Merge completed | Join completed |
+| --- | --- |
+| ![Tabrion merge results](screenshots/tabrion_merge.png) | ![Tabrion join results](screenshots/tabrion_join.png) |
+
+### Column type settings
+
+![Tabrion column type settings](screenshots/tabrion_column_types.png)
+
 ## Features
 
 ### Merge Files
